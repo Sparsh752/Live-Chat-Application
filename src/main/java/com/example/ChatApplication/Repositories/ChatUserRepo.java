@@ -1,7 +1,7 @@
 package com.example.ChatApplication.Repositories;
 
-import com.example.ChatApplication.RepoObjects.ChatUser;
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.example.ChatApplication.Entities.ChatUser;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface ChatUserRepo extends JpaRepository<ChatUser, Long> {
+public interface ChatUserRepo extends MongoRepository<ChatUser, String> {
 }

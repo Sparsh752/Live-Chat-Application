@@ -1,8 +1,9 @@
 package com.example.ChatApplication.Repositories;
 
-import com.example.ChatApplication.RepoObjects.TempChatConversation;
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.example.ChatApplication.Entities.TempChatConversation;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
-interface TempChatConversationRepo extends JpaRepository<TempChatConversation, Long> {
+
+public interface TempChatConversationRepo extends MongoRepository<TempChatConversation, String> {
 
 }

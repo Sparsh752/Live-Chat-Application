@@ -6,11 +6,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
-class MissingAppIdAdvice {
+class MissingAdvice {
 
-    @ExceptionHandler(MissingAppIdException.class)
+    @ExceptionHandler(MissingException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    String employeeNotFoundHandler(MissingAppIdException ex) {
+    String employeeNotFoundHandler(MissingException ex) {
         return ex.getMessage();
     }
 }
