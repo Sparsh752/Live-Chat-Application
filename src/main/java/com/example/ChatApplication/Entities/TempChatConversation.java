@@ -1,5 +1,6 @@
 package com.example.ChatApplication.Entities;
 
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 
@@ -8,8 +9,11 @@ import java.util.Objects;
 
 public class TempChatConversation extends BasicChatConversation{
     private @Id String conversationID;
-    @Indexed(name = "TTL",expireAfterSeconds = 1)
-    private Instant createdAt;
+
+    @CreatedDate
+    private Instant createdDate;
+    @Indexed(name = "TTL",expireAfterSeconds = 60)
+    private Instant expireAt;
     private String appID;
     private String userID;
 
@@ -18,14 +22,23 @@ public class TempChatConversation extends BasicChatConversation{
     public TempChatConversation(String appID,String userID){
         this.appID = appID;
         this.userID = userID;
-        this.createdAt = Instant.now();
+        this.createdDate=Instant.now();
+        this.expireAt = this.createdDate;
     }
-    public Instant getExpiredOn() {
-        return createdAt;
+    public Instant getCreatedDate() {
+        return expireAt;
     }
 
-    public void setCreatedAt(Instant createdAt) {
-        this.createdAt = createdAt;
+    public void setCreatedDate(Instant createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public Instant getExpireAt() {
+        return expireAt;
+    }
+
+    public void setExpireAt(Instant expireAt) {
+        this.expireAt = expireAt;
     }
 
     public String getConversationID(){

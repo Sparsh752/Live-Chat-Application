@@ -1,14 +1,13 @@
 package com.example.ChatApplication.Controllers;
 
 import com.example.ChatApplication.Entities.*;
-import com.example.ChatApplication.Exceptions.InvalidException;
 import com.example.ChatApplication.Exceptions.MissingException;
 import com.example.ChatApplication.Services.ChatServices;
-import com.example.ChatApplication.Services.UserServices;
+import com.example.ChatApplication.Services.TokenServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @RestController
 public class ChatController {
@@ -17,32 +16,25 @@ public class ChatController {
     private ChatServices chatServices;
 
     @Autowired
-    private UserServices userServices;
+    private TokenServices tokenServices;
 
     public ChatController(){}
 
     @PostMapping("/new")
-    NewResponse newConversation(@RequestBody NewRequest newRequest){
+    CompletableFuture<CompletableFuture<NewResponse>> newConversation(@RequestBody NewRequest newRequest){
         if(newRequest.getChatSessionToken()==null){
             throw new MissingException("Chat Session Token");
         }
-        ChatTokenClaims chatTokenClaims=userServices.decode(newRequest.getChatSessionToken());
-        if(chatTokenClaims.getChatUserId()==null){
-            throw new InvalidException("Chat Session Token");
-        }
-        if(chatTokenClaims.getAppId()==null){
-            throw new InvalidException("Chat Session Token");
-        }
-        if(userServices.ValidateUser(chatTokenClaims.getChatUserId())){
-            String conversationID = chatServices.CreateNewTempChat(chatTokenClaims.getAppId(),chatTokenClaims.getChatUserId());
-            return new NewResponse(conversationID,chatTokenClaims.getAppId(),chatTokenClaims.getChatUserId());
-        }else{
-            throw new InvalidException("User");
-        }
+        return tokenServices.ValidateChatSessionToken(newRequest.getChatSessionToken())
+                .thenApply(chatTokenClaims -> {
+                        return chatServices.CreateNewTempChat(chatTokenClaims.getAppId(),chatTokenClaims.getChatUserId())
+                                .thenApply(conversationID -> new NewResponse(conversationID,chatTokenClaims.getAppId(),chatTokenClaims.getChatUserId()));
+                });
+
     }
 
     @PostMapping("/send")
-    SendResponse newMessage(@RequestBody SendRequest sendRequest){
+    CompletableFuture<CompletableFuture<SendResponse>> newMessage(@RequestBody SendRequest sendRequest){
         if(sendRequest.getConversationID()==null){
             throw new MissingException("Conversation ID");
         }
@@ -52,52 +44,23 @@ public class ChatController {
         if(sendRequest.getText()==null){
             throw new MissingException("Text");
         }
-        ChatTokenClaims chatTokenClaims=userServices.decode(sendRequest.getChatSessionToken());
-        if(chatTokenClaims.getChatUserId()==null){
-            throw new InvalidException("Chat Session Token");
-        }
-        if(chatTokenClaims.getAppId()==null){
-            throw new InvalidException("Chat Session Token");
-        }
-        if(userServices.ValidateUser(chatTokenClaims.getChatUserId())){
-            if(chatServices.ValidateChatConversation(sendRequest.getConversationID(),chatTokenClaims.getAppId(),chatTokenClaims.getChatUserId())){
-                return chatServices.SaveChat(sendRequest.getConversationID(),sendRequest.getText(),chatTokenClaims.getChatUserId());
-            }else{
-                throw new InvalidException("Conversation ID");
-            }
-        }else{
-            throw new InvalidException("User");
-        }
+        return tokenServices.ValidateChatSessionToken(sendRequest.getChatSessionToken())
+                .thenApply(chatTokenClaims -> chatServices.SaveChat(sendRequest.getConversationID(),sendRequest.getText(),chatTokenClaims.getChatUserId(),chatTokenClaims.getAppId())
+                );
     }
 
     @GetMapping("/messages/{conversationID}")
-    List<ChatMessage> listMessages(@PathVariable String conversationID) {
-        if (chatServices.ValidateConversationID(conversationID)) {
-            return chatServices.fetchMessagesByConversationID(conversationID);
-        } else {
-            throw new InvalidException("Conversation ID");
-        }
+    CompletableFuture<List<ChatMessage>> listMessages(@PathVariable String conversationID) {
+        return chatServices.fetchMessagesByConversationID(conversationID);
     }
 
     @GetMapping("messages/{conversationID}/{messageID}")
-    ChatMessage listOneMessage(@PathVariable String conversationID, @PathVariable String messageID){
-        if (chatServices.ValidateConversationID(conversationID)) {
-            if(chatServices.ValidateMessageID(conversationID,messageID)){
-                return chatServices.fetchMessageByMessageID(messageID);
-            }else{
-                throw new InvalidException("Message ID");
-            }
-        } else {
-            throw new InvalidException("Conversation ID");
-        }
+    CompletableFuture<CompletableFuture<ChatMessage>> listOneMessage(@PathVariable String conversationID, @PathVariable String messageID){
+        return chatServices.fetchMessageByMessageID(messageID,conversationID);
     }
 
     @GetMapping("conversation/{conversationID}")
-    BasicChatConversation fetchConversation(@PathVariable String conversationID){
-        if(chatServices.ValidateConversationID(conversationID)){
-            return chatServices.fetchConversationByConversationID(conversationID);
-        }else {
-            throw new InvalidException("Conversation ID");
-        }
+    CompletableFuture<BasicChatConversation> fetchConversation(@PathVariable String conversationID){
+        return chatServices.fetchConversationByConversationID(conversationID);
     }
 }
