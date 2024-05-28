@@ -23,7 +23,7 @@ public class MessageServices {
         return CompletableFuture.completedFuture(chatMessageRepo.save(new ChatMessage(text,conversationID)));
     }
     @Transactional @Async("asyncUserMessageThread")
-    public CompletableFuture<Boolean> ValidateMessageID(String conversationID, String messageID){
+    public synchronized CompletableFuture<Boolean> ValidateMessageID(String conversationID, String messageID){
         Optional<ChatMessage> chatMessageOptional=chatMessageRepo.findById(messageID);
         if(chatMessageOptional.isPresent()){
             if(chatMessageOptional.get().getConversationID().equals(conversationID)){

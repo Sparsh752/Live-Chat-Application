@@ -34,7 +34,7 @@ public class ChatServices {
     }
 
     @Transactional @Async("asyncChatServiceThread")
-    public CompletableFuture<SendResponse> SaveChat(String conversationID, String text, String userID, String appID){
+    public synchronized CompletableFuture<SendResponse> SaveChat(String conversationID, String text, String userID, String appID){
         Optional<ChatConversation> chatConversationRes = chatConversationRepo.findById(conversationID);
         if(chatConversationRes.isPresent()){
             ChatConversation chatConversation=chatConversationRes.get();
@@ -68,7 +68,7 @@ public class ChatServices {
     }
 
     @Transactional
-    public boolean ValidateConversationID(String conversationID){
+    public synchronized boolean ValidateConversationID(String conversationID){
         Optional<ChatConversation> chatConversationOptional=chatConversationRepo.findById(conversationID);
         if(chatConversationOptional.isPresent()){
             return true;

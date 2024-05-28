@@ -3,10 +3,12 @@ package com.example.ChatApplication.Entities;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.Instant;
 import java.util.Objects;
 
+@Document
 public class TempChatConversation extends BasicChatConversation{
     private @Id String conversationID;
 
@@ -33,11 +35,11 @@ public class TempChatConversation extends BasicChatConversation{
         this.createdDate = createdDate;
     }
 
-    public Instant getExpireAt() {
+    public Instant getExpireAts() {
         return expireAt;
     }
 
-    public void setExpireAt(Instant expireAt) {
+    public void setExpireAts(Instant expireAt) {
         this.expireAt = expireAt;
     }
 
