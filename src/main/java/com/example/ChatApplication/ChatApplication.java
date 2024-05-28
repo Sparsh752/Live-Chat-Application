@@ -8,9 +8,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 public class ChatApplication {
 
-	public static void main(String[] args) {
-		System.out.println("The pid of current process: "+ProcessHandle.current().pid());
-		SpringApplication.run(ChatApplication.class, args);
-	}
+    public static void main(String[] args) {
+        System.out.println("The pid of current process: " + ProcessHandle.current().pid());
+        SpringApplication.run(ChatApplication.class, args);
+    }
 
 }

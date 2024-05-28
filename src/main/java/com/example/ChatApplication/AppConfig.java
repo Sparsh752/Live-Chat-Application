@@ -12,8 +12,8 @@ import java.util.concurrent.Executor;
 public class AppConfig {
 
     @Bean("asyncChatServiceThread")
-    public Executor asyncChatServiceExecutor(){
-        ThreadPoolTaskExecutor taskExecutor=new ThreadPoolTaskExecutor();
+    public Executor asyncChatServiceExecutor() {
+        ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
         taskExecutor.setCorePoolSize(5);
         taskExecutor.setQueueCapacity(150);
         taskExecutor.setMaxPoolSize(5);
@@ -21,9 +21,10 @@ public class AppConfig {
         taskExecutor.initialize();
         return taskExecutor;
     }
+
     @Bean("asyncTokenServiceThread")
-    public Executor asyncTokenServiceExecutor(){
-        ThreadPoolTaskExecutor taskExecutor=new ThreadPoolTaskExecutor();
+    public Executor asyncTokenServiceExecutor() {
+        ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
         taskExecutor.setCorePoolSize(2);
         taskExecutor.setQueueCapacity(100);
         taskExecutor.setMaxPoolSize(4);
@@ -31,9 +32,10 @@ public class AppConfig {
         taskExecutor.initialize();
         return taskExecutor;
     }
+
     @Bean("asyncUserServiceThread")
-    public Executor asyncUserServiceExecutor(){
-        ThreadPoolTaskExecutor taskExecutor=new ThreadPoolTaskExecutor();
+    public Executor asyncUserServiceExecutor() {
+        ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
         taskExecutor.setCorePoolSize(2);
         taskExecutor.setQueueCapacity(100);
         taskExecutor.setMaxPoolSize(4);
@@ -41,9 +43,10 @@ public class AppConfig {
         taskExecutor.initialize();
         return taskExecutor;
     }
+
     @Bean("asyncUserMessageThread")
-    public Executor asyncMessageServiceExecutor(){
-        ThreadPoolTaskExecutor taskExecutor=new ThreadPoolTaskExecutor();
+    public Executor asyncMessageServiceExecutor() {
+        ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
         taskExecutor.setCorePoolSize(2);
         taskExecutor.setQueueCapacity(100);
         taskExecutor.setMaxPoolSize(4);

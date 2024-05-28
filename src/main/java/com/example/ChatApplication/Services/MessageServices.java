@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
@@ -18,40 +19,44 @@ public class MessageServices {
     private ChatMessageRepo chatMessageRepo;
 
     // method to save a new message
-    @Transactional @Async("asyncUserMessageThread")
-    public CompletableFuture<ChatMessage> SaveMessage(String text, String conversationID){
-        return CompletableFuture.completedFuture(chatMessageRepo.save(new ChatMessage(text,conversationID)));
+    @Transactional
+    @Async("asyncUserMessageThread")
+    public CompletableFuture<ChatMessage> SaveMessage(String text, String conversationID) {
+        return CompletableFuture.completedFuture(chatMessageRepo.save(new ChatMessage(text, conversationID)));
     }
 
     // method to validate the message ID
-    @Transactional @Async("asyncUserMessageThread")
-    public synchronized CompletableFuture<Boolean> ValidateMessageID(String conversationID, String messageID){
-        
+    @Transactional
+    @Async("asyncUserMessageThread")
+    public synchronized CompletableFuture<Boolean> ValidateMessageID(String conversationID, String messageID) {
+
         // check if the messageID is present in the chatMessageRepo
-        Optional<ChatMessage> chatMessageOptional=chatMessageRepo.findById(messageID);
-        if(chatMessageOptional.isPresent()){
+        Optional<ChatMessage> chatMessageOptional = chatMessageRepo.findById(messageID);
+        if (chatMessageOptional.isPresent()) {
 
             // check if the conversationID is valid
-            if(chatMessageOptional.get().getConversationID().equals(conversationID)){
+            if (chatMessageOptional.get().getConversationID().equals(conversationID)) {
                 return CompletableFuture.completedFuture(true);
-            }else{
+            } else {
                 throw new InvalidException("Message ID");
             }
 
-        }else {
+        } else {
             throw new InvalidException("Message ID");
         }
     }
 
     // method to get a message
-    @Transactional @Async("asyncUserMessageThread")
-    public CompletableFuture<ChatMessage> GetMessage(String messageID){
+    @Transactional
+    @Async("asyncUserMessageThread")
+    public CompletableFuture<ChatMessage> GetMessage(String messageID) {
         return CompletableFuture.completedFuture(chatMessageRepo.findById(messageID).get());
     }
 
     // method to get all messages by conversation ID
-    @Transactional @Async("asyncUserMessageThread")
-    public CompletableFuture<List<ChatMessage>> GetMessagesByConversationID(String conversationID){
+    @Transactional
+    @Async("asyncUserMessageThread")
+    public CompletableFuture<List<ChatMessage>> GetMessagesByConversationID(String conversationID) {
         return CompletableFuture.completedFuture(chatMessageRepo.findByConversationID(conversationID));
     }
 }

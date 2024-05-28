@@ -6,12 +6,13 @@ public class SendRequest {
     String text;
     String chatSessionToken;
 
-    SendRequest(){}
+    SendRequest() {
+    }
 
-    SendRequest(String conversationID,String text,String chatSessionToken){
-        this.chatSessionToken=chatSessionToken;
-        this.text=text;
-        this.conversationID=conversationID;
+    SendRequest(String conversationID, String text, String chatSessionToken) {
+        this.chatSessionToken = chatSessionToken;
+        this.text = text;
+        this.conversationID = conversationID;
     }
 
     public void setConversationID(String conversationID) {

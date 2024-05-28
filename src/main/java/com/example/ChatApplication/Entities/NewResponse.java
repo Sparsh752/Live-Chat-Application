@@ -11,19 +11,19 @@ public class NewResponse {
     Long creationTime;
     Long expirationTime;
 
-    public NewResponse(){
-        this.welcomeMessage="Welcome to Sprinklr Chat!";
-        this.creationTime= Instant.now().toEpochMilli();
-        this.expirationTime=this.creationTime+60000;
+    public NewResponse() {
+        this.welcomeMessage = "Welcome to Sprinklr Chat!";
+        this.creationTime = Instant.now().toEpochMilli();
+        this.expirationTime = this.creationTime + 60000;
     }
 
-    public NewResponse(String conversationID,String appID,String userID){
-        this.appID=appID;
-        this.conversationID=conversationID;
-        this.userID=userID;
-        this.welcomeMessage="Welcome to Sprinklr Chat!";
-        this.creationTime= Instant.now().toEpochMilli();
-        this.expirationTime=this.creationTime+60000;
+    public NewResponse(String conversationID, String appID, String userID) {
+        this.appID = appID;
+        this.conversationID = conversationID;
+        this.userID = userID;
+        this.welcomeMessage = "Welcome to Sprinklr Chat!";
+        this.creationTime = Instant.now().toEpochMilli();
+        this.expirationTime = this.creationTime + 60000;
     }
 
     public void setAppID(String appID) {

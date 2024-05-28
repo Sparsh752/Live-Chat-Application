@@ -1,6 +1,7 @@
 package com.example.ChatApplication.Entities;
 
 import org.springframework.data.annotation.Id;
+
 import java.time.Instant;
 import java.util.Objects;
 
@@ -10,11 +11,14 @@ public class ChatMessage {
     private String text;
     private String conversationID;
     private Long creationTime;
-    public ChatMessage(){}
-    public ChatMessage(String text,String conversationID){
-        this.conversationID=conversationID;
-        this.text=text;
-        creationTime= Instant.now().toEpochMilli();
+
+    public ChatMessage() {
+    }
+
+    public ChatMessage(String text, String conversationID) {
+        this.conversationID = conversationID;
+        this.text = text;
+        creationTime = Instant.now().toEpochMilli();
     }
 
     public String getMessageID() {
@@ -50,20 +54,22 @@ public class ChatMessage {
     }
 
     @Override
-    public boolean equals(Object o){
+    public boolean equals(Object o) {
         if (this == o)
             return true;
         if (!(o instanceof ChatMessage))
             return false;
-        ChatMessage chatMessage=(ChatMessage) o;
-        return Objects.equals(chatMessage.conversationID,this.conversationID) && Objects.equals(chatMessage.messageID,this.messageID) && Objects.equals(chatMessage.text,this.text) && Objects.equals(this.creationTime,chatMessage.creationTime);
+        ChatMessage chatMessage = (ChatMessage) o;
+        return Objects.equals(chatMessage.conversationID, this.conversationID) && Objects.equals(chatMessage.messageID, this.messageID) && Objects.equals(chatMessage.text, this.text) && Objects.equals(this.creationTime, chatMessage.creationTime);
     }
+
     @Override
     public int hashCode() {
-        return Objects.hash(this.conversationID,this.messageID,this.text,this.creationTime);
+        return Objects.hash(this.conversationID, this.messageID, this.text, this.creationTime);
     }
+
     @Override
     public String toString() {
-        return "ChatMessage{" + "id=" + this.messageID + ", conversationID="+this.conversationID+", text="+this.text +", creationTime="+this.creationTime+'}';
+        return "ChatMessage{" + "id=" + this.messageID + ", conversationID=" + this.conversationID + ", text=" + this.text + ", creationTime=" + this.creationTime + '}';
     }
 }

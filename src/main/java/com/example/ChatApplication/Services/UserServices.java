@@ -7,6 +7,7 @@ import com.example.ChatApplication.Repositories.ChatUserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
@@ -18,9 +19,9 @@ public class UserServices {
 
     // method to validate the user
     @Async("asyncUserServiceThread")
-    public CompletableFuture<Boolean> ValidateUser(String userID){
+    public CompletableFuture<Boolean> ValidateUser(String userID) {
         Optional<ChatUser> chatUser = chatUserRepo.findById(userID);
-        if(chatUser.isPresent()){
+        if (chatUser.isPresent()) {
             return CompletableFuture.completedFuture(true);
         }
         throw new InvalidException("User");

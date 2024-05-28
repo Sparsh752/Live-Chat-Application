@@ -19,30 +19,31 @@ public class UserController {
     @Autowired
     private TokenServices tokenServices;
 
-    public UserController(){}
+    public UserController() {
+    }
 
     // endpoint to handle the handshake request
     @PostMapping("/handshake")
-    CompletableFuture<HandshakeResponse> handShake(@RequestBody HandshakeRequest handshakeRequest){
+    CompletableFuture<HandshakeResponse> handShake(@RequestBody HandshakeRequest handshakeRequest) {
 
         // check if the appID is missing
-        if(handshakeRequest.getAppID()==null){
+        if (handshakeRequest.getAppID() == null) {
             throw new MissingException("App ID");
         }
 
         // check if the chatSessionToken is missing
-        if(handshakeRequest.getChatSessionToken()==null){
+        if (handshakeRequest.getChatSessionToken() == null) {
 
             // create a new user
             return userServices.CreateNewUser(handshakeRequest.getAppID())
                     .thenApply(chatTokenClaims -> new HandshakeResponse(handshakeRequest.getAppID(), tokenServices.encode(chatTokenClaims)));
-        }else{
+        } else {
 
             // validate the chatSessionToken and return the response
-            String chatSessionToken=handshakeRequest.getChatSessionToken();
+            String chatSessionToken = handshakeRequest.getChatSessionToken();
             return tokenServices.ValidateChatSessionToken(chatSessionToken)
                     .thenApply(chatTokenClaims -> userServices.ValidateUser(chatTokenClaims.getChatUserId()))
-                    .thenApply(validated-> new HandshakeResponse(handshakeRequest.getAppID(),chatSessionToken));
+                    .thenApply(validated -> new HandshakeResponse(handshakeRequest.getAppID(), chatSessionToken));
         }
     }
 }

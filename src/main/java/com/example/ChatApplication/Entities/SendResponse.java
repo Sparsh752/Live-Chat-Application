@@ -7,13 +7,16 @@ public class SendResponse {
     String userID;
     String text;
     Long creationTime;
-    public SendResponse(){}
-    public SendResponse(String conversationID, String userID, String text, Long creationTime, String messageID){
-        this.conversationID=conversationID;
-        this.userID=userID;
-        this.text=text;
-        this.creationTime=creationTime;
-        this.messageID=messageID;
+
+    public SendResponse() {
+    }
+
+    public SendResponse(String conversationID, String userID, String text, Long creationTime, String messageID) {
+        this.conversationID = conversationID;
+        this.userID = userID;
+        this.text = text;
+        this.creationTime = creationTime;
+        this.messageID = messageID;
     }
 
     public void setUserID(String userID) {

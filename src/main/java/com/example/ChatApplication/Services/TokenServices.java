@@ -17,25 +17,25 @@ public class TokenServices {
     private UserServices userServices;
 
     // method to encode the chatTokenClaims
-    public String encode(ChatTokenClaims chatTokenClaims){
-        String chatTokenClaims_str=new Gson().toJson(chatTokenClaims);
+    public String encode(ChatTokenClaims chatTokenClaims) {
+        String chatTokenClaims_str = new Gson().toJson(chatTokenClaims);
         System.out.println(chatTokenClaims_str);
         Base64.Encoder encoder = Base64.getUrlEncoder();
-        String payload=new String(encoder.encode(chatTokenClaims_str.getBytes()));
-        String header="eyJhbGciOiJSUzI1NiJ9";
-        String chatSessionToken=header+"."+payload;
+        String payload = new String(encoder.encode(chatTokenClaims_str.getBytes()));
+        String header = "eyJhbGciOiJSUzI1NiJ9";
+        String chatSessionToken = header + "." + payload;
         return chatSessionToken;
     }
 
     // method to decode the chatSessionToken
-    public ChatTokenClaims decode(String chatSessionToken){
+    public ChatTokenClaims decode(String chatSessionToken) {
         String[] chunks = chatSessionToken.split("\\.");
-        String header,payload;
+        String header, payload;
         try {
             Base64.Decoder decoder = Base64.getUrlDecoder();
             header = new String(decoder.decode(chunks[0]));
             payload = new String(decoder.decode(chunks[1]));
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new InvalidException("Chat Session Token");
         }
         Gson g = new Gson();
@@ -57,6 +57,6 @@ public class TokenServices {
             throw new InvalidException("Chat Session Token");
         }
         return userServices.ValidateUser(chatTokenClaims.getChatUserId())
-                .thenApply(validated-> chatTokenClaims);
+                .thenApply(validated -> chatTokenClaims);
     }
 }

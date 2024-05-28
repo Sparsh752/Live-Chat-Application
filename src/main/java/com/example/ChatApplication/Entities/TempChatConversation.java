@@ -10,25 +10,27 @@ import java.util.Objects;
 
 // This class is used to represent a temporary chat conversation
 @Document
-public class TempChatConversation extends BasicChatConversation{
+public class TempChatConversation extends BasicChatConversation {
     private @Id String conversationID;
 
     @CreatedDate
     private Instant createdDate;
     // Index for Time to live
-    @Indexed(name = "TTL",expireAfterSeconds = 60)
+    @Indexed(name = "TTL", expireAfterSeconds = 60)
     private Instant expireAt;
     private String appID;
     private String userID;
 
-    public TempChatConversation(){
+    public TempChatConversation() {
     }
-    public TempChatConversation(String appID,String userID){
+
+    public TempChatConversation(String appID, String userID) {
         this.appID = appID;
         this.userID = userID;
-        this.createdDate=Instant.now();
+        this.createdDate = Instant.now();
         this.expireAt = this.createdDate;
     }
+
     public Instant getCreatedDate() {
         return expireAt;
     }
@@ -45,15 +47,18 @@ public class TempChatConversation extends BasicChatConversation{
         this.expireAt = expireAt;
     }
 
-    public String getConversationID(){
+    public String getConversationID() {
         return this.conversationID;
     }
-    public String getAppID(){
+
+    public String getAppID() {
         return this.appID;
     }
-    public String getUserID(){
+
+    public String getUserID() {
         return this.userID;
     }
+
     public void setConversationID(String id) {
         this.conversationID = id;
     }
@@ -65,6 +70,7 @@ public class TempChatConversation extends BasicChatConversation{
     public void setUserID(String userID) {
         this.userID = userID;
     }
+
     @Override
     public boolean equals(Object o) {
 
@@ -72,13 +78,15 @@ public class TempChatConversation extends BasicChatConversation{
             return true;
         if (!(o instanceof TempChatConversation))
             return false;
-        TempChatConversation tempChatConversation= (TempChatConversation) o;
-        return Objects.equals(this.conversationID,tempChatConversation.conversationID) && Objects.equals(this.appID,tempChatConversation.appID) && Objects.equals(this.userID,tempChatConversation.userID);
+        TempChatConversation tempChatConversation = (TempChatConversation) o;
+        return Objects.equals(this.conversationID, tempChatConversation.conversationID) && Objects.equals(this.appID, tempChatConversation.appID) && Objects.equals(this.userID, tempChatConversation.userID);
     }
+
     @Override
     public int hashCode() {
         return Objects.hash(this.conversationID, this.appID, this.userID);
     }
+
     @Override
     public String toString() {
         return "TempChatConversation{" + "id=" + this.conversationID + ", appId='" + this.appID + '\'' + ", userID='" + this.userID + '\'' + '}';
