@@ -7,10 +7,12 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.util.concurrent.Executor;
 
+// Thread Pool to execute different type of services
 @Configuration
 @EnableAsync
 public class AppConfig {
-
+    
+    // Thread pool for chat service
     @Bean("asyncChatServiceThread")
     public Executor asyncChatServiceExecutor() {
         ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
@@ -22,6 +24,7 @@ public class AppConfig {
         return taskExecutor;
     }
 
+    // Thread pool for token service
     @Bean("asyncTokenServiceThread")
     public Executor asyncTokenServiceExecutor() {
         ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
@@ -33,6 +36,7 @@ public class AppConfig {
         return taskExecutor;
     }
 
+    // Thread pool for user service
     @Bean("asyncUserServiceThread")
     public Executor asyncUserServiceExecutor() {
         ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
@@ -44,6 +48,7 @@ public class AppConfig {
         return taskExecutor;
     }
 
+    // Thread pool for message service
     @Bean("asyncUserMessageThread")
     public Executor asyncMessageServiceExecutor() {
         ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
