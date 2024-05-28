@@ -2,6 +2,7 @@ package com.example.ChatApplication.Entities;
 
 import java.time.Instant;
 
+// This class is used to represent the new response
 public class NewResponse {
     String conversationID;
     String appID;

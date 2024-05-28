@@ -1,5 +1,6 @@
 package com.example.ChatApplication.Entities;
 
+// This class is used to represent the send request
 public class SendRequest {
     String conversationID;
     String text;

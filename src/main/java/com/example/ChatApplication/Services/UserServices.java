@@ -16,6 +16,7 @@ public class UserServices {
     @Autowired
     private ChatUserRepo chatUserRepo;
 
+    // method to validate the user
     @Async("asyncUserServiceThread")
     public CompletableFuture<Boolean> ValidateUser(String userID){
         Optional<ChatUser> chatUser = chatUserRepo.findById(userID);
@@ -24,10 +25,12 @@ public class UserServices {
         }
         throw new InvalidException("User");
     }
+
+    // method to create a new user
     @Async("asyncUserServiceThread")
-    public CompletableFuture<ChatTokenClaims> CreateNewUser(String appID){
-        String userID=chatUserRepo.save(new ChatUser("ANONYMOUS",appID)).getUserID();
-        return CompletableFuture.completedFuture(new ChatTokenClaims(userID,appID));
+    public CompletableFuture<ChatTokenClaims> CreateNewUser(String appID) {
+        String userID = chatUserRepo.save(new ChatUser("ANONYMOUS", appID)).getUserID();
+        return CompletableFuture.completedFuture(new ChatTokenClaims(userID, appID));
     }
 
 }

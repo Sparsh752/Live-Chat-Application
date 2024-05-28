@@ -4,6 +4,7 @@ import org.springframework.data.annotation.Id;
 
 import java.util.Objects;
 
+// This class is used to represent a chat user
 public class ChatUser {
     private @Id String userID;
     private String userType;

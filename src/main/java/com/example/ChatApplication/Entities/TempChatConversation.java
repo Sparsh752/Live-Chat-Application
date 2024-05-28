@@ -8,12 +8,14 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.Instant;
 import java.util.Objects;
 
+// This class is used to represent a temporary chat conversation
 @Document
 public class TempChatConversation extends BasicChatConversation{
     private @Id String conversationID;
 
     @CreatedDate
     private Instant createdDate;
+    // Index for Time to live
     @Indexed(name = "TTL",expireAfterSeconds = 60)
     private Instant expireAt;
     private String appID;

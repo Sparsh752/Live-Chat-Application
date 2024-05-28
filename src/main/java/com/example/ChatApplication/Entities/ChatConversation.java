@@ -3,6 +3,7 @@ package com.example.ChatApplication.Entities;
 import org.springframework.data.annotation.Id;
 import java.util.Objects;
 
+// This class is used to represent a permanent chat conversation
 public class ChatConversation extends BasicChatConversation{
     private @Id String conversationID;
     String appID;

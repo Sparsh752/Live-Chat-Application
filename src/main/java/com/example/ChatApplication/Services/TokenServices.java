@@ -16,6 +16,7 @@ public class TokenServices {
     @Autowired
     private UserServices userServices;
 
+    // method to encode the chatTokenClaims
     public String encode(ChatTokenClaims chatTokenClaims){
         String chatTokenClaims_str=new Gson().toJson(chatTokenClaims);
         System.out.println(chatTokenClaims_str);
@@ -25,6 +26,8 @@ public class TokenServices {
         String chatSessionToken=header+"."+payload;
         return chatSessionToken;
     }
+
+    // method to decode the chatSessionToken
     public ChatTokenClaims decode(String chatSessionToken){
         String[] chunks = chatSessionToken.split("\\.");
         String header,payload;
@@ -39,9 +42,14 @@ public class TokenServices {
         ChatTokenClaims chatTokenClaims = g.fromJson(payload, ChatTokenClaims.class);
         return chatTokenClaims;
     }
+
     @Async("asyncTokenServiceThread")
     public CompletableFuture<ChatTokenClaims> ValidateChatSessionToken(String chatSessionToken) {
+
+        // decode the chatSessionToken
         ChatTokenClaims chatTokenClaims = decode(chatSessionToken);
+
+        // check if the chatTokenClaims are valid
         if (chatTokenClaims.getChatUserId() == null) {
             throw new InvalidException("Chat Session Token");
         }

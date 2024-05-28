@@ -1,5 +1,6 @@
 package com.example.ChatApplication.Entities;
 
+// This class is used to represent the handshake request
 public class HandshakeRequest {
     private String appID;
     private String chatSessionToken;

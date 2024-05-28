@@ -21,15 +21,24 @@ public class UserController {
 
     public UserController(){}
 
+    // endpoint to handle the handshake request
     @PostMapping("/handshake")
     CompletableFuture<HandshakeResponse> handShake(@RequestBody HandshakeRequest handshakeRequest){
+
+        // check if the appID is missing
         if(handshakeRequest.getAppID()==null){
             throw new MissingException("App ID");
         }
+
+        // check if the chatSessionToken is missing
         if(handshakeRequest.getChatSessionToken()==null){
+
+            // create a new user
             return userServices.CreateNewUser(handshakeRequest.getAppID())
                     .thenApply(chatTokenClaims -> new HandshakeResponse(handshakeRequest.getAppID(), tokenServices.encode(chatTokenClaims)));
         }else{
+
+            // validate the chatSessionToken and return the response
             String chatSessionToken=handshakeRequest.getChatSessionToken();
             return tokenServices.ValidateChatSessionToken(chatSessionToken)
                     .thenApply(chatTokenClaims -> userServices.ValidateUser(chatTokenClaims.getChatUserId()))

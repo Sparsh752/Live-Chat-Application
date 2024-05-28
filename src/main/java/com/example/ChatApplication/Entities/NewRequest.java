@@ -1,5 +1,6 @@
 package com.example.ChatApplication.Entities;
 
+// This class is used to represent the new request
 public class NewRequest {
     private String chatSessionToken;
     public NewRequest(){};

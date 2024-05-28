@@ -1,5 +1,6 @@
 package com.example.ChatApplication.Entities;
 
+// This class is used to represent the claims of the chat token
 public class ChatTokenClaims {
     String chatUserId;
     String appId;

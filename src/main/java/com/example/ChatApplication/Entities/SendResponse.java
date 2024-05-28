@@ -1,5 +1,6 @@
 package com.example.ChatApplication.Entities;
 
+// This class is used to represent the send response
 public class SendResponse {
     private String messageID;
     String conversationID;

@@ -4,6 +4,7 @@ import org.springframework.data.annotation.Id;
 import java.time.Instant;
 import java.util.Objects;
 
+// This class is used to represent a chat message
 public class ChatMessage {
     private @Id String messageID;
     private String text;
